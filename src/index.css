@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    letter-spacing: -0.011em;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+    letter-spacing: -0.025em;
+  }
+  
+  button {
+    @apply font-medium;
+    letter-spacing: -0.006em;
+  }
+}
+
+@layer components {
+  /* Professional Card - Clean & Minimal */
+  .card {
+    @apply bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+  
+  /* Navigation Bar */
+  .glass-nav {
+    @apply bg-white/95 backdrop-blur-sm border-b border-gray-200;
+  }
+  
+  /* Primary Button - Elegant Black */
+  .btn-primary {
+    @apply bg-gray-900 text-white px-6 py-2.5 rounded-lg font-medium tracking-tight hover:bg-gray-800 active:bg-gray-950 transition-colors duration-150;
+  }
+  
+  /* Secondary Button */
+  .btn-secondary {
+    @apply bg-white text-gray-900 px-6 py-2.5 rounded-lg font-medium tracking-tight border border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-150;
+  }
+  
+  /* Input Fields - Professional */
+  .input-field {
+    @apply w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-150;
+  }
+  
+  /* Status Badges - Refined */
+  .badge-unique {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 text-xs font-semibold rounded-md border border-green-200 tracking-wide uppercase;
+  }
+  
+  .badge-near {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 text-xs font-semibold rounded-md border border-amber-200 tracking-wide uppercase;
+  }
+  
+  .badge-duplicate {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 bg-red-50 text-red-700 text-xs font-semibold rounded-md border border-red-200 tracking-wide uppercase;
+  }
+  
+  /* Header Section */
+  .header-section {
+    @apply bg-white border-b border-gray-200;
+  }
+  
+  /* Stat Card */
+  .stat-card {
+    @apply bg-white rounded-lg border border-gray-200 p-5 hover:border-gray-300 transition-colors duration-150;
+  }
+  
+  /* Content Section */
+  .content-section {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
+
+:root {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+  margin: 0 auto;
+}
