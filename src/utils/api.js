@@ -35,22 +35,38 @@ class API {
         try {
             const response = await fetch(url, config);
             
-            // Check if response has content
-            const contentType = response.headers.get('content-type');
-            if (!contentType || !contentType.includes('application/json')) {
-                throw new Error('Server returned non-JSON response');
+            // Handle OPTIONS preflight requests (no body expected)
+            if (options.method === 'OPTIONS') {
+                return null;
             }
             
+            // Check content-type header
+            const contentType = response.headers.get('content-type');
+            
+            // Get response text
             const responseText = await response.text();
             
+            // Handle empty responses
             if (!responseText || responseText.trim() === '') {
+                if (response.ok) {
+                    return null;
+                }
                 throw new Error('Server returned empty response');
             }
             
-            const data = JSON.parse(responseText);
+            // Try to parse JSON
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (parseError) {
+                console.error('JSON Parse Error:', parseError);
+                console.error('Response Text:', responseText);
+                throw new Error('Server returned invalid JSON response');
+            }
             
+            // Handle error responses
             if (!response.ok) {
-                throw new Error(data.error || 'Request failed');
+                throw new Error(data.error || `Request failed with status ${response.status}`);
             }
             
             return data;

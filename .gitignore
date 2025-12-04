@@ -50,3 +50,5 @@ coverage/
 
 # Uploads
 /public/static/uploads
+.vercel
+.env*.local
