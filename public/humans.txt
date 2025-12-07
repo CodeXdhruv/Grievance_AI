@@ -7,7 +7,6 @@ Location: India
 
 /* THANKS */
 Special thanks to:
-- OpenAI for GPT assistance
 - Cloudflare Workers for backend hosting
 - Vercel for frontend deployment
 - HuggingFace for NLP models
@@ -16,5 +15,5 @@ Special thanks to:
 Last update: 2025-12-07
 Standards: HTML5, CSS3, React, ES6+
 Components: React, Vite, TailwindCSS
-Backend: Cloudflare Workers, D1 Database
+Backend: Cloudflare Workers, D1 Database, R2 Bucket
 AI/ML: Sentence Transformers, Cosine Similarity, NLP

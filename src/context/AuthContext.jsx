@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 
 const AuthContext = createContext();
 
@@ -20,30 +20,35 @@ export const AuthProvider = ({ children }) => {
         const userData = localStorage.getItem('user');
         
         if (token && userData) {
-            setUser(JSON.parse(userData));
+            try {
+                setUser(JSON.parse(userData));
+            } catch (error) {
+                console.error('Failed to parse user data:', error);
+                localStorage.removeItem('user');
+            }
         }
         
         setLoading(false);
     }, []);
 
-    const login = (userData, token) => {
+    const login = useCallback((userData, token) => {
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
-    };
+    }, []);
 
-    const logout = () => {
+    const logout = useCallback(() => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         setUser(null);
-    };
+    }, []);
 
-    const value = {
+    const value = useMemo(() => ({
         user,
         loading,
         login,
         logout
-    };
+    }), [user, loading, login, logout]);
 
     return (
         <AuthContext.Provider value={value}>

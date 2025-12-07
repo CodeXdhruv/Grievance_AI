@@ -1,17 +1,26 @@
 // React Frontend - Main App Component
 // File: src/App.jsx
 
-import React, { useState, useEffect } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './components/Auth/Login';
-import Register from './components/Auth/Register';
-import Dashboard from './components/Dashboard/Dashboard';
-import SubmitText from './components/Grievance/SubmitText';
-import SubmitPDF from './components/Grievance/SubmitPDF';
-import GrievanceList from './components/Grievance/GrievanceList';
-import AdminDashboard from './components/Admin/AdminDashboard';
-import Navbar from './components/Layout/Navbar';
 import { AuthProvider, useAuth } from './context/AuthContext';
+
+// Lazy load components for code splitting
+const Login = lazy(() => import('./components/Auth/Login'));
+const Register = lazy(() => import('./components/Auth/Register'));
+const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
+const SubmitText = lazy(() => import('./components/Grievance/SubmitText'));
+const SubmitPDF = lazy(() => import('./components/Grievance/SubmitPDF'));
+const GrievanceList = lazy(() => import('./components/Grievance/GrievanceList'));
+const AdminDashboard = lazy(() => import('./components/Admin/AdminDashboard'));
+const Navbar = lazy(() => import('./components/Layout/Navbar'));
+
+// Loading component
+const LoadingSpinner = () => (
+    <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
+);
 
 function App() {
     return (
@@ -29,25 +38,26 @@ function AppContent() {
     const { user, loading } = useAuth();
     
     if (loading) {
-        return (
-            <div className="flex items-center justify-center h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-            </div>
-        );
+        return <LoadingSpinner />;
     }
     
     return (
         <>
-            {user && <Navbar />}
+            {user && (
+                <Suspense fallback={<div className="h-16 bg-gray-800" />}>
+                    <Navbar />
+                </Suspense>
+            )}
             
-            <Routes>
-                <Route path="/login" element={
-                    user ? <Navigate to="/dashboard" /> : <Login />
-                } />
-                
-                <Route path="/register" element={
-                    user ? <Navigate to="/dashboard" /> : <Register />
-                } />
+            <Suspense fallback={<LoadingSpinner />}>
+                <Routes>
+                    <Route path="/login" element={
+                        user ? <Navigate to="/dashboard" replace /> : <Login />
+                    } />
+                    
+                    <Route path="/register" element={
+                        user ? <Navigate to="/dashboard" replace /> : <Register />
+                    } />
                 
                 <Route path="/dashboard" element={
                     <ProtectedRoute>
@@ -79,8 +89,9 @@ function AppContent() {
                     </ProtectedRoute>
                 } />
                 
-                <Route path="/" element={<Navigate to="/dashboard" />} />
+                <Route path="/" element={<Navigate to="/dashboard" replace />} />
             </Routes>
+            </Suspense>
         </>
     );
 }
