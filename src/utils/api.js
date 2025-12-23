@@ -85,7 +85,42 @@ class API {
         });
     }
     
-    async post(endpoint, data) {
+    async post(endpoint, data, options = {}) {
+        // Check if data is FormData (for file uploads)
+        if (data instanceof FormData) {
+            const url = `${this.baseURL}${endpoint}`;
+            
+            const headers = {};
+            // Get token from localStorage if not already set
+            const token = this.token || localStorage.getItem('token');
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            
+            // Don't set Content-Type for FormData - browser will set it with boundary
+            const response = await fetch(url, {
+                method: 'POST',
+                headers,
+                body: data
+            });
+            
+            const responseText = await response.text();
+            
+            if (!responseText || responseText.trim() === '') {
+                if (response.ok) return null;
+                throw new Error('Server returned empty response');
+            }
+            
+            const result = JSON.parse(responseText);
+            
+            if (!response.ok) {
+                throw new Error(result.error || `Request failed with status ${response.status}`);
+            }
+            
+            return result;
+        }
+        
+        // Regular JSON post
         return this.request(endpoint, {
             method: 'POST',
             body: JSON.stringify(data)

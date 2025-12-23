@@ -1,9 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply bg-white text-gray-900 antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  /* Card */
+  .card {
+    @apply bg-white rounded-xl border border-gray-100 p-6;
+  }
+  
+  /* Navigation */
+  .glass-nav {
+    @apply bg-white/95 backdrop-blur-md border-b border-gray-100;
+  }
+  
+  /* Primary Button - Softer Violet */
+  .btn-primary {
+    @apply px-5 py-2.5 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors;
+  }
+  
+  /* Secondary Button */
+  .btn-secondary {
+    @apply px-5 py-2.5 bg-white text-gray-700 font-medium rounded-lg border border-gray-200 hover:border-gray-300 transition-colors;
+  }
+  
+  /* Input Fields - Softer focus */
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-50 focus:border-blue-300 transition-all;
+  }
+  
+  /* Status Badges */
+  .badge-unique {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-600 text-xs font-medium rounded-full;
+  }
+  
+  .badge-near {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-600 text-xs font-medium rounded-full;
+  }
+  
+  .badge-duplicate {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 bg-red-50 text-red-600 text-xs font-medium rounded-full;
+  }
+  
+  /* Header Section */
+  .header-section {
+    @apply bg-white border-b border-gray-100;
+  }
+  
+  /* Stat Card */
+  .stat-card {
+    @apply bg-white rounded-xl border border-gray-100 p-5;
+  }
+  
+  /* Content Section */
+  .content-section {
+    @apply max-w-5xl mx-auto px-6;
+  }
+  
+  /* Category Badges */
+  .badge-category {
+    @apply inline-flex items-center px-3 py-1 text-xs font-medium rounded-full;
+  }
+  
+  .badge-category-water { @apply bg-blue-50 text-blue-600; }
+  .badge-category-garbage { @apply bg-emerald-50 text-emerald-600; }
+  .badge-category-road { @apply bg-orange-50 text-orange-600; }
+  .badge-category-electricity { @apply bg-yellow-50 text-yellow-600; }
+  .badge-category-sewage { @apply bg-blue-50 text-blue-500; }
+  .badge-category-noise { @apply bg-pink-50 text-pink-600; }
+  .badge-category-park { @apply bg-teal-50 text-teal-600; }
+  .badge-category-other { @apply bg-gray-50 text-gray-600; }
+}
+
 @layer utilities {
-  /* Screen reader only class for accessibility */
   .sr-only {
     position: absolute;
     width: 1px;
@@ -17,101 +98,29 @@
   }
 }
 
-@layer base {
-  body {
-    @apply bg-gray-50 text-gray-900 antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    letter-spacing: -0.011em;
-    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold;
-    letter-spacing: -0.025em;
-  }
-  
-  button {
-    @apply font-medium;
-    letter-spacing: -0.006em;
-  }
-}
-
-@layer components {
-  /* Professional Card - Clean & Minimal */
-  .card {
-    @apply bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow duration-200;
-  }
-  
-  /* Navigation Bar */
-  .glass-nav {
-    @apply bg-white/95 backdrop-blur-sm border-b border-gray-200;
-  }
-  
-  /* Primary Button - Elegant Black */
-  .btn-primary {
-    @apply bg-gray-900 text-white px-6 py-2.5 rounded-lg font-medium tracking-tight hover:bg-gray-800 active:bg-gray-950 transition-colors duration-150;
-  }
-  
-  /* Secondary Button */
-  .btn-secondary {
-    @apply bg-white text-gray-900 px-6 py-2.5 rounded-lg font-medium tracking-tight border border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-150;
-  }
-  
-  /* Input Fields - Professional */
-  .input-field {
-    @apply w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-150;
-  }
-  
-  /* Status Badges - Refined */
-  .badge-unique {
-    @apply inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 text-xs font-semibold rounded-md border border-green-200 tracking-wide uppercase;
-  }
-  
-  .badge-near {
-    @apply inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 text-xs font-semibold rounded-md border border-amber-200 tracking-wide uppercase;
-  }
-  
-  .badge-duplicate {
-    @apply inline-flex items-center gap-1.5 px-3 py-1 bg-red-50 text-red-700 text-xs font-semibold rounded-md border border-red-200 tracking-wide uppercase;
-  }
-  
-  /* Header Section */
-  .header-section {
-    @apply bg-white border-b border-gray-200;
-  }
-  
-  /* Stat Card */
-  .stat-card {
-    @apply bg-white rounded-lg border border-gray-200 p-5 hover:border-gray-300 transition-colors duration-150;
-  }
-  
-  /* Content Section */
-  .content-section {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 :root {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.6;
-  font-weight: 400;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
 
 #root {
   width: 100%;
-  margin: 0 auto;
+}
+
+::selection {
+  background: rgba(139, 92, 246, 0.1);
 }

@@ -6,13 +6,16 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 // Lazy load components for code splitting
+const LandingPage = lazy(() => import('./components/LandingPage/LandingPage'));
 const Login = lazy(() => import('./components/Auth/Login'));
 const Register = lazy(() => import('./components/Auth/Register'));
 const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
 const SubmitText = lazy(() => import('./components/Grievance/SubmitText'));
 const SubmitPDF = lazy(() => import('./components/Grievance/SubmitPDF'));
+const SubmitBatchPDF = lazy(() => import('./components/Grievance/SubmitBatchPDF'));
 const GrievanceList = lazy(() => import('./components/Grievance/GrievanceList'));
 const AdminDashboard = lazy(() => import('./components/Admin/AdminDashboard'));
+const ClusterVisualization = lazy(() => import('./components/Admin/ClusterVisualization'));
 const Navbar = lazy(() => import('./components/Layout/Navbar'));
 
 // Loading component
@@ -78,6 +81,12 @@ function AppContent() {
                     </ProtectedRoute>
                 } />
                 
+                <Route path="/submit-batch" element={
+                    <ProtectedRoute>
+                        <SubmitBatchPDF />
+                    </ProtectedRoute>
+                } />
+                
                 <Route path="/grievances" element={
                     <ProtectedRoute>
                         <GrievanceList />
@@ -90,7 +99,16 @@ function AppContent() {
                     </ProtectedRoute>
                 } />
                 
-                <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                <Route path="/admin/clusters" element={
+                    <ProtectedRoute requireAdmin>
+                        <ClusterVisualization />
+                    </ProtectedRoute>
+                } />
+                
+                {/* Landing page at root - redirect to dashboard if logged in */}
+                <Route path="/" element={
+                    user ? <Navigate to="/dashboard" replace /> : <LandingPage />
+                } />
             </Routes>
             </Suspense>
         </>

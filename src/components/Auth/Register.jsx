@@ -51,23 +51,20 @@ function Register() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12">
+        <div className="min-h-screen flex items-center justify-center bg-white py-12">
             {/* Register Card */}
             <div className="w-full max-w-md mx-4">
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 md:p-10">
-                    {/* Logo/Icon */}
-                    <div className="flex justify-center mb-8">
-                        <div className="w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center">
-                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                            </svg>
-                        </div>
+                <div className="bg-white rounded-xl border border-gray-100 p-8 md:p-10">
+                    {/* Logo */}
+                    <div className="text-center mb-8">
+                        <span className="text-2xl font-semibold text-gray-900">Grievance</span>
+                        <span className="text-2xl font-semibold text-blue-700">AI</span>
                     </div>
                     
-                    <h2 className="text-2xl font-semibold text-center text-gray-900 mb-2">
-                        Create Account
+                    <h2 className="text-xl font-semibold text-center text-gray-900 mb-2">
+                        Create account
                     </h2>
-                    <p className="text-center text-sm text-gray-600 mb-8">Join our grievance management system</p>
+                    <p className="text-center text-sm text-gray-500 mb-8">Get started for free</p>
 
                     {error && (
                         <div className="mb-6 p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -91,7 +88,7 @@ function Register() {
                                 value={formData.name}
                                 onChange={handleChange}
                                 className="input-field"
-                                placeholder="John Doe"
+                                
                                 required
                             />
                         </div>
@@ -106,7 +103,6 @@ function Register() {
                                 value={formData.email}
                                 onChange={handleChange}
                                 className="input-field"
-                                placeholder="you@example.com"
                                 required
                             />
                         </div>
@@ -121,7 +117,6 @@ function Register() {
                                 value={formData.password}
                                 onChange={handleChange}
                                 className="input-field"
-                                placeholder="••••••••"
                                 required
                             />
                         </div>
@@ -136,7 +131,6 @@ function Register() {
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
                                 className="input-field"
-                                placeholder="••••••••"
                                 required
                             />
                         </div>

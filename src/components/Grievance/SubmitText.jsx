@@ -1,26 +1,58 @@
-// Submit Text Grievance Component
+// Submit Text Grievance Component with Structured Input
 // File: src/components/Grievance/SubmitText.jsx
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 
+// Category options for grievances
+const CATEGORIES = [
+    { value: 'WATER', label: 'Water Supply' },
+    { value: 'GARBAGE', label: 'Garbage Collection' },
+    { value: 'ROAD', label: 'Road / Pothole' },
+    { value: 'ELECTRICITY', label: 'Electricity' },
+    { value: 'SEWAGE', label: 'Sewage / Drainage' },
+    { value: 'NOISE', label: 'Noise Pollution' },
+    { value: 'PARK', label: 'Parks / Playground' },
+    { value: 'OTHER', label: 'Other' }
+];
+
 function SubmitText() {
     const navigate = useNavigate();
-    const [grievanceText, setGrievanceText] = useState('');
+    const [formData, setFormData] = useState({
+        category: '',
+        area: '',
+        locationDetails: '',
+        grievanceText: ''
+    });
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
     
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        if (!grievanceText.trim()) {
-            setError('Please enter grievance text');
+        if (!formData.category) {
+            setError('Please select a category');
             return;
         }
         
-        if (grievanceText.split(' ').length < 5) {
+        if (!formData.area.trim()) {
+            setError('Please enter the area/location');
+            return;
+        }
+        
+        if (!formData.grievanceText.trim()) {
+            setError('Please enter grievance description');
+            return;
+        }
+        
+        if (formData.grievanceText.split(' ').length < 5) {
             setError('Grievance must contain at least 5 words');
             return;
         }
@@ -30,12 +62,10 @@ function SubmitText() {
         setResult(null);
         
         try {
-            const response = await api.post('/grievances/submit-text', {
-                grievanceText
-            });
+            const response = await api.post('/grievances/submit-text', formData);
             
             setResult(response.grievance);
-            setGrievanceText('');
+            setFormData({ category: '', area: '', locationDetails: '', grievanceText: '' });
             
             // Auto-navigate after 3 seconds
             setTimeout(() => {
@@ -139,30 +169,95 @@ function SubmitText() {
                         )}
                     
                     <form onSubmit={handleSubmit}>
-                        <div className="mb-6">
+                        {/* Category Selection */}
+                        <div className="mb-5">
                             <label 
-                                htmlFor="grievance" 
+                                htmlFor="category" 
                                 className="block text-sm font-semibold text-gray-900 mb-2"
                             >
-                                Grievance Text *
+                                Category *
+                            </label>
+                            <select
+                                id="category"
+                                name="category"
+                                value={formData.category}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all text-gray-900"
+                                disabled={loading}
+                            >
+                                <option value="">Select a category</option>
+                                {CATEGORIES.map(cat => (
+                                    <option key={cat.value} value={cat.value}>{cat.label}</option>
+                                ))}
+                            </select>
+                        </div>
+                        
+                        {/* Area/Location Fields */}
+                        <div className="grid md:grid-cols-2 gap-4 mb-5">
+                            <div>
+                                <label 
+                                    htmlFor="area" 
+                                    className="block text-sm font-semibold text-gray-900 mb-2"
+                                >
+                                    Area / Sector *
+                                </label>
+                                <input
+                                    type="text"
+                                    id="area"
+                                    name="area"
+                                    value={formData.area}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all text-gray-900 placeholder-gray-400"
+                                    placeholder="e.g., Sector 15"
+                                    disabled={loading}
+                                />
+                            </div>
+                            <div>
+                                <label 
+                                    htmlFor="locationDetails" 
+                                    className="block text-sm font-semibold text-gray-900 mb-2"
+                                >
+                                    Block / Building (Optional)
+                                </label>
+                                <input
+                                    type="text"
+                                    id="locationDetails"
+                                    name="locationDetails"
+                                    value={formData.locationDetails}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all text-gray-900 placeholder-gray-400"
+                                    placeholder="e.g., Block C, Near Building 42"
+                                    disabled={loading}
+                                />
+                            </div>
+                        </div>
+                        
+                        {/* Grievance Description */}
+                        <div className="mb-6">
+                            <label 
+                                htmlFor="grievanceText" 
+                                className="block text-sm font-semibold text-gray-900 mb-2"
+                            >
+                                Grievance Description *
                             </label>
                             <textarea
-                                id="grievance"
-                                rows="10"
+                                id="grievanceText"
+                                name="grievanceText"
+                                rows="8"
                                 className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all text-gray-900 placeholder-gray-400"
-                                placeholder="Describe your grievance in detail... Be specific about dates, locations, and relevant details."
-                                value={grievanceText}
-                                onChange={(e) => setGrievanceText(e.target.value)}
+                                placeholder="Describe your grievance in detail..."
+                                value={formData.grievanceText}
+                                onChange={handleInputChange}
                                 disabled={loading}
                             />
                             <div className="mt-2 flex justify-between items-center text-xs text-gray-600">
                                 <div className="flex gap-3">
-                                    <span>{grievanceText.length} characters</span>
+                                    <span>{formData.grievanceText.length} characters</span>
                                     <span>•</span>
-                                    <span>{grievanceText.split(/\s+/).filter(w => w).length} words</span>
+                                    <span>{formData.grievanceText.split(/\s+/).filter(w => w).length} words</span>
                                 </div>
-                                <span className={`font-medium ${grievanceText.split(/\s+/).filter(w => w).length >= 5 ? 'text-green-600' : 'text-gray-400'}`}>
-                                    {grievanceText.split(/\s+/).filter(w => w).length >= 5 ? '✓ Ready' : 'Minimum 5 words required'}
+                                <span className={`font-medium ${formData.grievanceText.split(/\s+/).filter(w => w).length >= 5 ? 'text-green-600' : 'text-gray-400'}`}>
+                                    {formData.grievanceText.split(/\s+/).filter(w => w).length >= 5 ? '✓ Ready' : 'Minimum 5 words required'}
                                 </span>
                             </div>
                         </div>
@@ -170,7 +265,7 @@ function SubmitText() {
                         <div className="flex gap-3">
                             <button
                                 type="submit"
-                                disabled={loading || !grievanceText.trim()}
+                                disabled={loading || !formData.category || !formData.area.trim() || !formData.grievanceText.trim()}
                                 className="flex-1 btn-primary py-3 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {loading ? (
